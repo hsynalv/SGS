@@ -1,0 +1,92 @@
+/* Genel stil ayarları */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f0f4f8;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+
+header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 20px 0;
+    text-align: center;
+    font-size: 2rem;
+    letter-spacing: 1px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #007bff;
+    font-size: 1.75rem;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: bold;
+    color: #333;
+}
+
+.form-select, .form-control {
+    border-radius: 5px;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    box-shadow: none;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    color: #fff;
+}
+
+button.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+button.btn-primary {
+    background-color: #007bff;
+    border: none;
+    color: #fff;
+}
+
+button.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.tool-options {
+    margin-top: 15px;
+}
+
+/* Hover efekti */
+.form-select:hover, .form-control:hover {
+    border-color: #007bff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.1);
+}
+
+/* Ekstra buton stili */
+button[type="button"] {
+    margin-top: 20px;
+}

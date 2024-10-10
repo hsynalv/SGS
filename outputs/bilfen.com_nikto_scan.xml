@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+<!DOCTYPE niktoscans SYSTEM "/var/lib/nikto/docs/nikto.dtd">
+<niktoscans>
+<niktoscan hoststest="0" options="-h bilfen.com -p 80 -nossl -e 167 -output bilfen.com_nikto_scan.xml -Format xml" version="2.5.0" scanstart="Thu Sep  5 22:31:17 2024" scanend="Thu Jan  1 02:00:00 1970" scanelapsed=" seconds" nxmlversion="1.2">
+
+<scandetails targetip="172.67.68.200" targethostname="bilfen.com" targetport="80" targetbanner="cloudflare" starttime="2024-09-05 22:31:17" sitename="http://bilfen.com:80/" siteip="http://172.67.68.200:80/" hostheader="bilfen.com" errors="0" checks="6954">
+
+
+<item id="999957" method="GET">
+<description><![CDATA[/: The anti-clickjacking X-Frame-Options header is not present.]]></description>
+<uri><![CDATA[%2f]]></uri>
+<namelink><![CDATA[http://bilfen.com:80%2f]]></namelink>
+<iplink><![CDATA[http://172.67.68.200:80%2f]]></iplink>
+<references><![CDATA[https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options]]></references>
+</item>
+
+<item id="999103" method="GET">
+<description><![CDATA[/: The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type.]]></description>
+<uri><![CDATA[%2f]]></uri>
+<namelink><![CDATA[http://bilfen.com:80%2f]]></namelink>
+<iplink><![CDATA[http://172.67.68.200:80%2f]]></iplink>
+<references><![CDATA[https://www.netsparker.com/web-vulnerability-scanner/vulnerabilities/missing-content-type-header/]]></references>
+</item>
+
+<statistics elapsed="820" itemsfound="2" itemstested="6954" endtime="2024-09-05 22:44:57" />
+</scandetails>
+</niktoscan>
+
+
+</niktoscans>
+<?xml version="1.0" ?>
+<!DOCTYPE niktoscans SYSTEM "/var/lib/nikto/docs/nikto.dtd">
+<niktoscans>
+<niktoscan hoststest="0" options="-h bilfen.com -p 80 -nossl -e 167 -output bilfen.com_nikto_scan.xml -Format xml" version="2.5.0" scanstart="Thu Sep  5 22:31:20 2024" scanend="Thu Jan  1 02:00:00 1970" scanelapsed=" seconds" nxmlversion="1.2">
+
+<scandetails targetip="104.26.7.140" targethostname="bilfen.com" targetport="80" targetbanner="cloudflare" starttime="2024-09-05 22:31:20" sitename="http://bilfen.com:80/" siteip="http://104.26.7.140:80/" hostheader="bilfen.com" errors="0" checks="6954">
+
+
+<item id="999957" method="GET">
+<description><![CDATA[/: The anti-clickjacking X-Frame-Options header is not present.]]></description>
+<uri><![CDATA[/]]></uri>
+<namelink><![CDATA[http://bilfen.com:80/]]></namelink>
+<iplink><![CDATA[http://104.26.7.140:80/]]></iplink>
+<references><![CDATA[https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options]]></references>
+</item>
+
+<item id="999103" method="GET">
+<description><![CDATA[/: The X-Content-Type-Options header is not set. This could allow the user agent to render the content of the site in a different fashion to the MIME type.]]></description>
+<uri><![CDATA[/]]></uri>
+<namelink><![CDATA[http://bilfen.com:80/]]></namelink>
+<iplink><![CDATA[http://104.26.7.140:80/]]></iplink>
+<references><![CDATA[https://www.netsparker.com/web-vulnerability-scanner/vulnerabilities/missing-content-type-header/]]></references>
+</item>
+
+<statistics elapsed="821" itemsfound="2" itemstested="6954" endtime="2024-09-05 22:45:01" />
+</scandetails>
+</niktoscan>
+
+
+</niktoscans>

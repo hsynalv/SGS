@@ -1,0 +1,22 @@
+
+-----------------
+DIRB v2.22    
+By The Dark Raver
+-----------------
+
+OUTPUT_FILE: dirb_output_20240916_144702.xml
+START_TIME: Mon Sep 16 14:47:02 2024
+URL_BASE: https://youngfinebrightzen.neverssl.com/online/
+WORDLIST_FILES: /usr/share/wordlists/dirb/common.txt
+
+-----------------
+
+GENERATED WORDS: 4612
+
+---- Scanning URL: https://youngfinebrightzen.neverssl.com/online/ ----
++ https://youngfinebrightzen.neverssl.com/online/favicon.ico (CODE:200|SIZE:124)
++ https://youngfinebrightzen.neverssl.com/online/index.html (CODE:200|SIZE:2238)
+
+-----------------
+END_TIME: Mon Sep 16 15:10:04 2024
+DOWNLOADED: 4612 - FOUND: 2
