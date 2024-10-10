@@ -11,10 +11,17 @@ document.addEventListener('DOMContentLoaded', function() {
         var googleDorkOptions = document.getElementById('google-dork-options');
         var slowlorisOptions = document.getElementById('slowloris-options');
         var sublist3rOptions = document.getElementById('sublist3r-options');
+        var dorkIntelligenceNameOptions = document.getElementById('dork-intelligence-name-options');
+        var emailFindDomainOptions  = document.getElementById('email-find-domain-options');
+        var localExploreDeviceOptions = document.getElementById('local-exploredevice-options');
+        var socialAnalyzerOptions = document.getElementById('social-analyzer-options');
+
+
 
         var toolOptions = [
             niktoOptions, nmapOptions, raccoonOptions, skipfishOptions, wapitiOptions,
-            dirbOptions, googleDorkOptions, slowlorisOptions, sublist3rOptions
+            dirbOptions, googleDorkOptions, slowlorisOptions, sublist3rOptions, dorkIntelligenceNameOptions,
+            emailFindDomainOptions, localExploreDeviceOptions, socialAnalyzerOptions
         ];
 
         // Tüm alanları gizle ve required özelliğini kaldır
@@ -49,6 +56,14 @@ document.addEventListener('DOMContentLoaded', function() {
             selectedOptions = slowlorisOptions;
         } else if (selectedTool === 'sublist3r') {
             selectedOptions = sublist3rOptions;
+        } else if (selectedTool === 'dork_intelligence_name') {
+            selectedOptions = dorkIntelligenceNameOptions;
+        } else if (selectedTool === 'email_find_domain') {
+            selectedOptions = emailFindDomainOptions
+        } else if (selectedTool === 'local_exploredevice') {
+            selectedOptions = localExploreDeviceOptions
+        } else if (selectedTool === 'social_analyzer_name') {
+            selectedOptions = socialAnalyzerOptions
         }
 
         if (selectedOptions) {
@@ -167,6 +182,47 @@ function startScan() {
             console.error("Raccon form alanı bulunamadı.");
         }
     }
+    // dork_intelligence_name aracı seçildiyse
+    if (tool === 'dork_intelligence_name') {
+        var nameDorkIntelligence = document.getElementById('name-dork-intelligence');
+        if (nameDorkIntelligence) {
+            data['name'] = nameDorkIntelligence.value;
+        } else {
+            console.error("Dork Intelligence (Name) form alanı bulunamadı.");
+        }
+    }
+    // Email Find Domain aracı seçildiyse
+    if (tool === 'email_find_domain') {
+        var domainEmailFindDomain = document.getElementById('domain-email-find-domain');
+        if (domainEmailFindDomain) {
+            data['domain'] = domainEmailFindDomain.value;
+        } else {
+            console.error("Email Find Domain form alanı bulunamadı.");
+        }
+    }
+    // Local Explore Device aracı seçildiyse
+    if (tool === 'local_exploredevice') {
+        var interfaceLocalExploreDevice = document.getElementById('interface');
+        var ipCidrLocalExploreDevice = document.getElementById('ip_cidr');
+
+        if (interfaceLocalExploreDevice && ipCidrLocalExploreDevice) {
+            data['interface'] = interfaceLocalExploreDevice.value;
+            data['ip_cidr'] = ipCidrLocalExploreDevice.value;
+        } else {
+            console.error("Local Explore Device form alanları bulunamadı.");
+        }
+    }
+    // Social Analyzer aracı seçildiyse
+    if (tool === 'social_analyzer_name') {
+        var targetNameSocialAnalyzer = document.getElementById('target-name-social-analyzer');
+        if (targetNameSocialAnalyzer) {
+            data['target_name'] = targetNameSocialAnalyzer.value;
+        } else {
+            console.error("Social Analyzer form alanı bulunamadı.");
+        }
+    }
+
+
     console.log(data)
     socket.emit('start_scan', data);
 

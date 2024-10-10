@@ -70,32 +70,38 @@ def start_scan(data):
         port = data.get('port')
         ssl_option = data.get('ssl_option')
         command = ['python3', 'app/scripts/nikto_script.py', domain, port, ssl_option]
+        print(command)
         threading.Thread(target=long_task, args=(command, 'Nikto', domain)).start()
 
     elif tool == 'nmap':
         domain = data.get('domain')
         scan_type = data.get('scan_type')
         command = ['python3', 'app/scripts/nmap_script.py', domain, scan_type]
+        print(command)
         threading.Thread(target=long_task, args=(command, 'Nmap', domain)).start()
 
     elif tool == 'raccoon':
         domain = data.get('domain')
         command = ['python3', 'app/scripts/raccoon_script.py', domain]
+        print(command)
         threading.Thread(target=long_task, args=(command, 'Raccoon', domain)).start()
 
     elif tool == 'skipfish':
         url = data.get('url')
         command = ['python3', 'app/scripts/skipfish_script.py', url]
+        print(command)
         threading.Thread(target=long_task, args=(command, 'Skipfish', url)).start()
 
     elif tool == 'wapiti':
         url = data.get('url')
         command = ['python3', 'app/scripts/wapiti_script.py', url]
+        print(command)
         threading.Thread(target=long_task, args=(command, 'Wapiti', url)).start()
 
     elif tool == 'dirb':
         url = data.get('url')
         command = ['python3', 'app/scripts/dirb_scan.py', url]
+        print(command)
         threading.Thread(target=long_task, args=(command, 'Dirb', url)).start()
 
     elif tool == 'google_dork':
@@ -106,12 +112,40 @@ def start_scan(data):
     elif tool == 'slowloris_ddos':
         url = data.get('url')
         command = ['python3', 'app/scripts/slowlorisDDOS.py', url]
+        print(command)
         threading.Thread(target=long_task, args=(command, 'Slowloris DDOS', url)).start()
 
     elif tool == 'sublist3r':
         domain = data.get('domain')
         command = ['python3', 'app/scripts/subdomain_detect.py', domain]
+        print(command)
         threading.Thread(target=long_task, args=(command, 'Sublist3r', domain)).start()
+
+    elif tool == 'dork_intelligence_name':
+        name = data.get('name')
+        command = ['python3', 'app/scripts/dorkIntellegenceName.py', name]
+        print(command)
+        threading.Thread(target=long_task, args=(command, 'Google Dork Intelligence (Name)', name)).start()
+
+    elif tool == 'email_find_domain':
+        domain = data.get('domain')
+        command = ['python3', 'app/scripts/emailfinddomain.py', domain]
+        print(command)
+        threading.Thread(target=long_task, args=(command, 'Email Find Domain', domain)).start()
+
+    elif tool == 'local_exploredevice':
+        interface = data.get('interface')
+        ip_cidr = data.get('ip_cidr')
+        command = ['python3', 'app/scripts/localExploredevice.py', interface, ip_cidr]
+        print(command)
+        threading.Thread(target=long_task, args=(command, 'Local Explore Device', interface)).start()
+
+    # Social Analyzer aracı seçildiyse
+    elif tool == 'social_analyzer_name':
+        target_name = data.get('target_name')
+        command = ['python3', 'app/scripts/socialAnalyzerName.py', target_name]
+        print(command)
+        threading.Thread(target=long_task, args=(command, 'Social Analyzer', target_name)).start()
 
     # Taramanın başlatıldığını bildiriyoruz
     socketio.emit('progress', {'status': 'Tarama başlatıldı!'})
