@@ -30,7 +30,11 @@ safety_settings = [
 
 @main_bp.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('home.html')
+
+@main_bp.route('/scan')
+def scan():
+    return render_template('scan.html')
 
 @main_bp.route('/scan_status')
 def scan_status():

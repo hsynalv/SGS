@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>CyberAY</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        /* Custom CSS */
+        :root {
+            --main-bg-color: #0a1d37;
+            --secondary-color: #00b3b3;
+            --text-color: #ffffff;
+            --highlight-color: #00f260;
+        }
+
+        body {
+            background-color: var(--main-bg-color);
+            color: var(--text-color);
+        }
+
+        .navbar {
+            background-color: #0d253f;
+        }
+
+        .navbar-brand img {
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .hero {
+            background: url('https://example.com/hero-image.jpg') no-repeat center center/cover;
+            height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+        }
+
+        /* Services Section with Animation */
+        .service-card {
+            background-color: #152a44;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 255, 200, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0px 0px 25px rgba(0, 255, 200, 0.5);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--highlight-color);
+        }
+
+        .highlight-box {
+            border-left: 5px solid var(--highlight-color);
+            padding-left: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn-highlight {
+            background-color: var(--highlight-color);
+            border-color: var(--highlight-color);
+        }
+
+        footer {
+            background-color: #0d253f;
+            color: white;
+            padding: 20px 0;
+        }
+
+        footer a {
+            color: var(--highlight-color);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: var(--secondary-color);
+        }
+
+        .highlight-box {
+        border-left: 5px solid #00f260;
+        padding-left: 15px;
+        margin-bottom: 30px;
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.5s ease;
+    }
+
+    .highlight-box.fade-in-up {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .dropdown-item:hover {
+    background-color: #152a44;
+    color: #00f260;
+}
+    </style>
+    <!-- Custom CSS for animation -->
+
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0d253f; padding: 20px 0;">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="{{ url_for('main.index') }}" style="font-size: 1.8rem; font-weight: bold;">
+            <img src="{{ url_for('static', filename='img/cyberAy.png') }}" alt="Logo" style="height: 60px; margin-right: 10px;"> CyberAY
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#" style="font-size: 1.2rem;">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#services" style="font-size: 1.2rem;">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#tools" style="font-size: 1.2rem;">Tools</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact" style="font-size: 1.2rem;">Contact</a>
+                </li>
+            </ul>
+
+            {% if current_user.is_authenticated %}
+                <!-- Authenticated User Dropdown Menu -->
+                    <li class="nav-item dropdown" style="list-style-type: none; padding-left: 5px">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: var(--highlight-color); font-size: 1.2rem;">
+                            <i class="bi bi-person-circle me-2" style="font-size: 1.5rem;"></i>
+                            {{ current_user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="userDropdown" style="background-color: #0a1d37; border-radius: 10px;">
+                            <li><a class="dropdown-item" href="{{ url_for('user.profile') }}" style="color: white; padding: 10px; font-size: 1.1rem;">Profil</a></li>
+                            <li><hr class="dropdown-divider" style="border-color: rgba(255, 255, 255, 0.2);"></li>
+                            <li><a class="dropdown-item" href="{{ url_for('user.logout') }}" style="color: white; padding: 10px; font-size: 1.1rem;">Çıkış Yap</a></li>
+                        </ul>
+                    </li>
+
+            {% else %}
+                <!-- For Non-Authenticated Users -->
+                <a href="{{ url_for('user.login') }}">
+                    <button class="btn btn-outline-light ms-3" style="font-size: 1.1rem; padding: 10px 20px;">Login</button>
+                </a>
+
+                <a href="{{ url_for('user.signup') }}">
+                    <button class="btn btn-highlight ms-2" style="font-size: 1.1rem; padding: 10px 20px; background-color: #00f260; border: none;">Sign Up</button>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+
+
+
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container text-center">
+        <h1>Secure Your Business Today</h1>
+        <p>Get peace of mind with 24/7 cybersecurity insurance.</p>
+        <a href="#services" class="btn btn-highlight btn-lg">Discover More</a>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section id="services" class="py-5">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-lg-4 mb-4">
+                <div class="service-card">
+                    <div class="service-icon mb-4">
+                        <i class="bi bi-shield-lock-fill"></i>
+                    </div>
+                    <h3>Automated Scanning</h3>
+                    <p>Continuous network scanning for vulnerabilities to keep your data safe.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="service-card">
+                    <div class="service-icon mb-4">
+                        <i class="bi bi-file-earmark-bar-graph-fill"></i>
+                    </div>
+                    <h3>Detailed Reports</h3>
+                    <p>Comprehensive reports are generated automatically to give you insight into your security status.</p>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="service-card">
+                    <div class="service-icon mb-4">
+                        <i class="bi bi-tools"></i>
+                    </div>
+                    <h3>Advanced Tools</h3>
+                    <p>Utilize the latest cybersecurity tools to enhance your protection.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tools Section -->
+<section id="tools" class="py-5" style="background: linear-gradient(135deg, #0a1d37, #152a44);">
+    <div class="container">
+        <h2 class="text-center mb-5" style="color: #00f260;">Cybersecurity Tools</h2>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="highlight-box animate-on-scroll" style="color: white;">
+                    <h4>Network Scanner</h4>
+                    <p>Identify network vulnerabilities and ensure your defenses are solid.</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="highlight-box animate-on-scroll" style="color: white;">
+                    <h4>Malware Detection</h4>
+                    <p>AI-powered tools to detect and eliminate malicious threats in real time.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-lg-6">
+                <div class="highlight-box animate-on-scroll" style="color: white;">
+                    <h4>Data Encryption</h4>
+                    <p>Keep your sensitive data protected with state-of-the-art encryption algorithms.</p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="highlight-box animate-on-scroll" style="color: white;">
+                    <h4>Penetration Testing</h4>
+                    <p>Test your security posture with regular, automated penetration tests.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="text-center text-lg-start text-white" style="background-color: #0d253f; padding: 40px 0;">
+    <div class="container">
+        <div class="row">
+            <!-- About Section -->
+            <div class="col-md-4 mb-4">
+                <h5 class="text-uppercase mb-3" style="color: #00f260;">CyberSecurity Insurance</h5>
+                <p>We offer the best cybersecurity insurance solutions with cutting-edge tools to keep your business safe from digital threats. Protect your assets and stay secure 24/7.</p>
+            </div>
+
+            <!-- Quick Links Section -->
+            <div class="col-md-4 mb-4">
+                <h5 class="text-uppercase mb-3" style="color: #00f260;">Quick Links</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-white">Privacy Policy</a></li>
+                    <li><a href="#" class="text-white">Terms of Service</a></li>
+                    <li><a href="#" class="text-white">Contact Us</a></li>
+                    <li><a href="#" class="text-white">FAQ</a></li>
+                </ul>
+            </div>
+
+            <!-- Social Media Section -->
+            <div class="col-md-4 mb-4 text-md-right">
+                <h5 class="text-uppercase mb-3" style="color: #00f260;">Follow Us</h5>
+                <a href="#" class="text-white me-3">
+                    <i class="bi bi-twitter" style="font-size: 1.5rem;"></i>
+                </a>
+                <a href="#" class="text-white me-3">
+                    <i class="bi bi-linkedin" style="font-size: 1.5rem;"></i>
+                </a>
+                <a href="#" class="text-white me-3">
+                    <i class="bi bi-facebook" style="font-size: 1.5rem;"></i>
+                </a>
+            </div>
+        </div>
+
+        <hr style="border-color: rgba(255, 255, 255, 0.2);">
+
+        <!-- Copyright Section -->
+        <div class="text-center py-3">
+            <p class="mb-0">&copy; 2024 CyberSecurity Insurance. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Custom Animation Script -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const elements = document.querySelectorAll(".animate-on-scroll");
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("fade-in-up");
+                }
+            });
+        });
+
+        elements.forEach((el) => observer.observe(el));
+    });
+</script>
+</body>
+</html>
