@@ -7,19 +7,93 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-    <header class="bg-dark text-white text-center py-3">
-        <h1>Tarama Değerlendirme</h1>
-    </header>
+    <style>
+        body {
+            background-color: #0a1d37;
+            color: #ffffff;
+        }
 
+        .card {
+            background-color: #152a44;
+            border-radius: 15px;
+        }
+
+        h1, h5 {
+            color: #00f260;
+        }
+
+        .table {
+            color: #ffffff;
+        }
+
+        .table th, .table td {
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary {
+            background-color: #00f260;
+            border-color: #00f260;
+            color: #0a1d37;
+        }
+
+        .btn-primary:hover {
+            background-color: #00d950;
+            border-color: #00d950;
+        }
+
+        .modal-content {
+            background-color: #152a44;
+            color: #ffffff;
+        }
+
+        .modal-title {
+            color: #00f260;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0d253f; padding: 10px 0;">
+        <div class="container" style="margin: 1px auto">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('main.index') }}" style="font-size: 1.8rem; font-weight: bold;">
+                <img src="{{ url_for('static', filename='img/cyberAy.png') }}" alt="Logo" style="height: 60px; margin-right: 10px;"> CyberAY
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#" style="font-size: 1.2rem;">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services" style="font-size: 1.2rem;">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#tools" style="font-size: 1.2rem;">Tools</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact" style="font-size: 1.2rem;">Contact</a>
+                    </li>
+                </ul>
+                <a href="{{ url_for('user.login') }}">
+                    <button class="btn btn-outline-light ms-3" style="font-size: 1.1rem; padding: 10px 20px;">Login</button>
+                </a>
+                <a href="{{ url_for('user.signup') }}">
+                    <button class="btn btn-highlight ms-2" style="font-size: 1.1rem; padding: 10px 20px; background-color: #00f260; border: none;">Sign Up</button>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
     <main class="container my-5">
         <section class="card p-4 shadow">
             {% if categorized_files %}
                 {% for tool_name, files in categorized_files.items() %}
                     <h5>{{ tool_name | capitalize }}</h5>
-                    <table class="table table-bordered table-striped">
-                        <thead>
+                    <table class="table table-bordered table-striped" style="color: #fff; border-color: rgba(255, 255, 255, 0.2);">
+                        <thead style="background-color: #152a44;">
                             <tr>
                                 <th>Dosya Adı</th>
                                 <th>Görüntüle</th>
@@ -29,25 +103,28 @@
                         </thead>
                         <tbody>
                             {% for file in files %}
-                            <tr>
+                            <tr style="background-color: #0a1d37;">
                                 <td>{{ file }}</td>
                                 <td>
-                                    <a href="{{ url_for('main.show_file', filename=file) }}" class="btn btn-primary" target="_blank">
+                                    <a href="{{ url_for('main.show_file', filename=file) }}" class="btn btn-outline-light" target="_blank" style="border-color: #00f260; color: #00f260;">
                                         Dosyayı Aç
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{{ url_for('main.download_file', filename=file) }}" class="btn btn-primary" target="_blank">
+                                    <a href="{{ url_for('main.download_file', filename=file) }}" class="btn btn-outline-light" target="_blank" style="border-color: #00f260; color: #00f260;">
                                         Dosyayı İndir
                                     </a>
                                 </td>
                                 <td>
-                                    <button class="btn btn-primary" id="evaluate-btn-{{ file }}" onclick="evaluateScan('{{ file }}', this)">Tarama Sonucunu Değerlendir</button>
+                                    <button class="btn btn-highlight" id="evaluate-btn-{{ file }}" onclick="evaluateScan('{{ file }}', this)" style="background-color: #00f260; color: #0a1d37;">
+                                        Tarama Sonucunu Değerlendir
+                                    </button>
                                 </td>
                             </tr>
                             {% endfor %}
                         </tbody>
                     </table>
+
                 {% endfor %}
             {% else %}
                 <p>Henüz herhangi bir tarama sonucu yok.</p>
@@ -111,7 +188,48 @@
         }
     </script>
 
-    <!-- Bootstrap JS (Modals gibi bileşenler için gerekli) -->
+    <!-- Footer -->
+    <footer class="text-center text-lg-start text-white" style="background-color: #0d253f; padding: 40px 0;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-uppercase mb-3" style="color: #00f260;">CyberSecurity Insurance</h5>
+                    <p>We offer the best cybersecurity insurance solutions with cutting-edge tools to keep your business safe from digital threats. Protect your assets and stay secure 24/7.</p>
+                </div>
+
+                <div class="col-md-4 mb-4">
+                    <h5 class="text-uppercase mb-3" style="color: #00f260;">Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="text-white">Terms of Service</a></li>
+                        <li><a href="#" class="text-white">Contact Us</a></li>
+                        <li><a href="#" class="text-white">FAQ</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 mb-4 text-md-right">
+                    <h5 class="text-uppercase mb-3" style="color: #00f260;">Follow Us</h5>
+                    <a href="#" class="text-white me-3">
+                        <i class="bi bi-twitter" style="font-size: 1.5rem;"></i>
+                    </a>
+                    <a href="#" class="text-white me-3">
+                        <i class="bi bi-linkedin" style="font-size: 1.5rem;"></i>
+                    </a>
+                    <a href="#" class="text-white me-3">
+                        <i class="bi bi-facebook" style="font-size: 1.5rem;"></i>
+                    </a>
+                </div>
+            </div>
+
+            <hr style="border-color: rgba(255, 255, 255, 0.2);">
+
+            <div class="text-center py-3">
+                <p class="mb-0">&copy; 2024 CyberSecurity Insurance. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
