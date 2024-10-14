@@ -11,6 +11,19 @@ class User(UserMixin, Document):
 
     meta = {'collection': 'users'}
 
+
+    def get_id(self):
+        return str(self.id)
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return self.is_active
+
+    def is_anonymous(self):
+        return False
+
     def to_dict(self):
         return {
             "id": str(self.id),

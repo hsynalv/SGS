@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.models.user import User
 # 'db' importunu burada değil, fonksiyon içerisinde yapacağız.
@@ -32,18 +32,18 @@ def signup():
 @user_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form['email']
-        password = request.form['password']
+        email = request.form.get('email')
+        password = request.form.get('password')
 
-        # Kullanıcıyı e-posta ile bul
         user = User.objects(email=email).first()
 
         if user and check_password_hash(user.password, password):
             login_user(user)
-            flash('Başarıyla giriş yaptınız.', 'success')
+            flash(f'Hoş geldin, {user.username}!', 'success')
             return redirect(url_for('main.index'))
         else:
-            flash('Hatalı giriş bilgileri. Lütfen tekrar deneyin.', 'danger')
+            flash('Geçersiz giriş bilgileri.', 'danger')
+            return redirect(url_for('user.signup'))
 
     return render_template('user/login.html')
 
@@ -54,3 +54,11 @@ def logout():
     logout_user()
     flash('Başarıyla çıkış yaptınız.', 'success')
     return redirect(url_for('user.login'))
+
+@user_bp.route('/profile')
+def profile():
+    if current_user.is_authenticated:
+        username = current_user.username
+        return f'Hoş geldin, {username}!'
+    else:
+        return redirect(url_for('user.login'))
