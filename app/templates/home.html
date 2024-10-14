@@ -103,17 +103,17 @@
         opacity: 0;
         transform: translateY(50px);
         transition: all 0.5s ease;
-    }
+        }
 
-    .highlight-box.fade-in-up {
-        opacity: 1;
-        transform: translateY(0);
-    }
+        .highlight-box.fade-in-up {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
-    .dropdown-item:hover {
-    background-color: #152a44;
-    color: #00f260;
-}
+        .dropdown-item:hover {
+        background-color: #152a44;
+        color: #00f260;
+        }
     </style>
     <!-- Custom CSS for animation -->
 
@@ -153,7 +153,7 @@
                             {{ current_user.username }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end shadow-lg" aria-labelledby="userDropdown" style="background-color: #0a1d37; border-radius: 10px;">
-                            <li><a class="dropdown-item" href="{{ url_for('user.profile') }}" style="color: white; padding: 10px; font-size: 1.1rem;">Profil</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('main.tarama_degerlendirme') }}" style="color: white; padding: 10px; font-size: 1.1rem;">Geçmiş Taramalar</a></li>
                             <li><hr class="dropdown-divider" style="border-color: rgba(255, 255, 255, 0.2);"></li>
                             <li><a class="dropdown-item" href="{{ url_for('user.logout') }}" style="color: white; padding: 10px; font-size: 1.1rem;">Çıkış Yap</a></li>
                         </ul>
