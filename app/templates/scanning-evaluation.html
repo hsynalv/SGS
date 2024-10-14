@@ -30,16 +30,6 @@
             border-color: rgba(255, 255, 255, 0.2);
         }
 
-        .btn-primary {
-            background-color: #00f260;
-            border-color: #00f260;
-            color: #0a1d37;
-        }
-
-        .btn-primary:hover {
-            background-color: #00d950;
-            border-color: #00d950;
-        }
 
         .modal-content {
             background-color: #152a44;
@@ -106,17 +96,17 @@
                             <tr style="background-color: #0a1d37;">
                                 <td>{{ file }}</td>
                                 <td>
-                                    <a href="{{ url_for('main.show_file', filename=file) }}" class="btn btn-outline-light" target="_blank" style="border-color: #00f260; color: #00f260;">
+                                    <a href="{{ url_for('main.show_file', filename=file) }}" class="btn btn-outline-light" target="_blank" style="border-color: #00f260; color: #152a44;">
                                         Dosyayı Aç
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{{ url_for('main.download_file', filename=file) }}" class="btn btn-outline-light" target="_blank" style="border-color: #00f260; color: #00f260;">
+                                    <a href="{{ url_for('main.download_file', filename=file) }}" class="btn btn-outline-light" target="_blank" style="border-color: #00f260; color: #152a44;">
                                         Dosyayı İndir
                                     </a>
                                 </td>
                                 <td>
-                                    <button class="btn btn-highlight" id="evaluate-btn-{{ file }}" onclick="evaluateScan('{{ file }}', this)" style="background-color: #00f260; color: #0a1d37;">
+                                    <button class="btn btn-highlight" id="evaluate-btn-{{ file }}" onclick="evaluateScan('{{ file }}', this)" style="background-color: #00f260; color: #152a44;">
                                         Tarama Sonucunu Değerlendir
                                     </button>
                                 </td>
