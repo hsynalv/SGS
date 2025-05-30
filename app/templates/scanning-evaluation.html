@@ -220,13 +220,25 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Burada değerlendirme sonucu gösterilecek -->
-                    <div id="evaluation-content">
-                        {{ evaluation | safe }}
+                    <div id="evaluation-content" class="p-2">
+                        <!-- Değerlendirme içeriği burada gösterilecek -->
+                    </div>
+                    
+                    <!-- Risk göstergesi -->
+                    <div class="mt-4 mb-3" id="risk-meter-container" style="display: none;">
+                        <h6 class="text-center" style="color: #00f260;">Risk Puanı</h6>
+                        <div class="progress" style="height: 25px; background-color: #0a1d37; border-radius: 10px;">
+                            <div id="risk-meter" class="progress-bar" role="progressbar" 
+                                style="width: 0%; border-radius: 10px;" 
+                                aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                    <button type="button" class="btn btn-highlight" id="download-report" style="background-color: #00f260; color: #152a44;">
+                        Raporu İndir
+                    </button>
                 </div>
             </div>
         </div>
@@ -241,19 +253,15 @@
 
             try {
                 const response = await fetch(`/evaluate_scan/${filename}`);
-                const data = await response.text();
+                const data = await response.json();
                 const evaluationContent = document.getElementById('evaluation-content');
-
-                // Gelen text'i HTML içinde göstermek için düzenleme yapalım
-                const formattedData = data.replace(/\n/g, "<br>")
-                                          .replace(/\*{2}(.+?)\*{2}/g, "<strong>$1</strong>")
-                                          .replace(/\*(.+?)\*/g, "<em>$1</em>")
-                                          .replace("{\"evaluation\":"," ")
-                                          .replace("\"}"," ");
-
-                // Modal içinde güncellenmiş veriyi göster
-                evaluationContent.innerHTML = formattedData;
-
+                
+                // Veriyi HTML formatında göster
+                evaluationContent.innerHTML = data.evaluation;
+                
+                // Risk puanını çıkart ve göster
+                extractRiskScore(data.evaluation);
+                
                 // Modal'ı aç
                 const evaluationModal = new bootstrap.Modal(document.getElementById('evaluationModal'));
                 evaluationModal.show();
@@ -265,6 +273,56 @@
                 buttonElement.disabled = false;
             }
         }
+        
+        // Risk puanını çıkarma ve gösterme fonksiyonu
+        function extractRiskScore(evaluationText) {
+            const riskMeterContainer = document.getElementById('risk-meter-container');
+            const riskMeter = document.getElementById('risk-meter');
+            
+            // Risk puanını regex ile bul
+            const riskRegex = /\*\*RİSK PUANI: (\d+)\*\*/;
+            const match = evaluationText.match(riskRegex);
+            
+            if (match && match[1]) {
+                const riskScore = parseInt(match[1]);
+                riskMeterContainer.style.display = 'block';
+                riskMeter.style.width = riskScore + '%';
+                riskMeter.innerHTML = riskScore + '%';
+                riskMeter.setAttribute('aria-valuenow', riskScore);
+                
+                // Risk seviyesine göre renklendirme
+                if (riskScore <= 25) {
+                    riskMeter.className = 'progress-bar bg-success';
+                } else if (riskScore <= 50) {
+                    riskMeter.className = 'progress-bar bg-warning';
+                } else if (riskScore <= 75) {
+                    riskMeter.className = 'progress-bar bg-orange';
+                    riskMeter.style.backgroundColor = '#ff9800';
+                } else {
+                    riskMeter.className = 'progress-bar bg-danger';
+                }
+            } else {
+                riskMeterContainer.style.display = 'none';
+            }
+        }
+        
+        // Raporu indirme fonksiyonu
+        document.getElementById('download-report').addEventListener('click', function() {
+            const content = document.getElementById('evaluation-content').innerHTML;
+            const convertedContent = content.replace(/<br>/g, '\n');
+            const plainText = convertedContent.replace(/<[^>]*>/g, '');
+            
+            const blob = new Blob([plainText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Güvenlik_Tarama_Raporu.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
     </script>
 
     <!-- Footer -->

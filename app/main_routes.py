@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, send_from_directory, json, Response
-import google.generativeai as genai
+# import google.generativeai as genai
+import openai
 from . import socketio
 import threading
 import subprocess
@@ -9,24 +10,6 @@ import os
 import requests
 
 main_bp = Blueprint('main', __name__)
-safety_settings = [
-  {
-    "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-    "threshold": "BLOCK_NONE"
-  },
-  {
-    "category": "HARM_CATEGORY_HATE_SPEECH",
-    "threshold": "BLOCK_NONE"
-  },
-  {
-    "category": "HARM_CATEGORY_HARASSMENT",
-    "threshold": "BLOCK_NONE"
-  },
-  {
-    "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
-    "threshold": "BLOCK_NONE"
-  }
-]
 
 @main_bp.route('/')
 def index():
@@ -195,25 +178,71 @@ def show_file(filename):
 
 @main_bp.route('/evaluate_scan/<filename>', methods=['GET'])
 def evaluate_scan(filename):
-    GOOGLE_API_KEY = "AIzaSyAPxjtYAXNe9-6dy5euO5rOIXrgos8ADO4"
-    genai.configure(api_key=GOOGLE_API_KEY)
-    model = genai.GenerativeModel('gemini-pro')
-
+    # API anahtarını çevresel değişkenden alma
+    OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY", "")
+    
+    # API anahtarı yoksa hata mesajı döndür
+    if not OPENAI_API_KEY:
+        return Response(json.dumps({"evaluation": "API anahtarı bulunamadı. Lütfen OPENAI_API_KEY çevresel değişkenini ayarlayın."}, ensure_ascii=False), 
+                      content_type="application/json; charset=utf-8")
+    
+    openai.api_key = OPENAI_API_KEY
+    
     # XML dosyasının içeriğini okuma
     file_path = f"outputs/{filename}"
     with open(file_path, 'r') as file:
         file_content = file.read()
 
+    try:
+        response = openai.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "Sen bir siber güvenlik uzmanısın. Verilen tarama çıktılarını detaylı ve profesyonel bir şekilde analiz edip, belirli bir formatta cevap vermelisin. Risk puanı verirken zaafiyetlerin ciddiyetini, sayısını ve potansiyel etkilerini dikkate almalısın."},
+                {"role": "user", "content": f"""Sana linux güvenlik tarama araçlarıyla yapılan web sitesi taramasının çıktılarını gönderiyorum. Bu çıktıları detaylı bir şekilde analiz et ve aşağıdaki formatta cevap ver:
 
-    response = model.generate_content(f"Custom InstrucInstruction: Sana linux toolları ile taradığım web sitesinin çıktılarını gönderiyorum. Bu çıktıları analiz ederek bana 100 üzerinden bir puan vereceksin bu puan arttıkça sistemde zaafiyet barındırdığı anlamına gelecek. Ayrıca bulduğun açıkları kullanıcıya anlatarak nasıl kapatılacağı konusunda bilgiler vereceksin. Hangi tool olduğunu da filename özelliğinden anlayacaksın Ve Türkçe cevap ver. Filename: {filename}. Tool Çıktısı: {file_content}")
+**RİSK PUANI: [0-100]**
+(Bu puan sistemdeki zaafiyetlere göre belirlenecek. Puanı hesaplarken şu faktörleri dikkate al:
+- Bulunan zaafiyetlerin sayısı ve ciddiyeti
+- Kritik zaafiyetler (RCE, SQL Injection vb.) 25-35 puan arttırır
+- Yüksek seviye zaafiyetler 15-25 puan arttırır
+- Orta seviye zaafiyetler 5-15 puan arttırır
+- Düşük seviye zaafiyetler 1-5 puan arttırır
+- Zaafiyetlerin birleştirilip bir saldırı zinciri oluşturma potansiyeli
+- SSL/TLS eksiklikleri, güncel olmayan servisler
+- Zaafiyetlerin gerçekten istismar edilebilirliği
+100 puan en riskli durumu gösterir, 0 puan ise hiçbir risk olmadığını gösterir.)
 
-    #response = model.generate_content("naber?")
+**RİSK SEVİYESİ: [Düşük/Orta/Yüksek/Kritik]**
+(0-25: Düşük, 26-50: Orta, 51-75: Yüksek, 76-100: Kritik)
 
-    # Yanıtı text formatında al
-    evaluation = getattr(response, 'text', "Yorum bulunamadı")
-    evaluation = evaluation.replace("\n", "<br>")
-    print(response)
+**ÖZET:**
+(Tarama sonucunun kısa özeti)
 
+**BULUNAN ZAAFİYETLER:**
+1. [Zaafiyet Adı 1] - [Risk Seviyesi]
+   - Açıklama: [Zaafiyet açıklaması]
+   - Etki: [Olası etkiler]
+   - Çözüm: [Çözüm önerisi]
+
+2. [Zaafiyet Adı 2] - [Risk Seviyesi]
+   - Açıklama: [Zaafiyet açıklaması]
+   - Etki: [Olası etkiler]
+   - Çözüm: [Çözüm önerisi]
+
+**GENEL ÖNERİLER:**
+(Sistemin genel güvenliğini artırmak için öneriler)
+
+Tarama çıktısı: {filename}
+Tool Çıktısı: {file_content}"""}
+            ],
+            max_tokens=2000
+        )
+        
+        # Yanıtı text formatında al
+        evaluation = response.choices[0].message.content
+        evaluation = evaluation.replace("\n", "<br>")
+    except Exception as e:
+        evaluation = f"API hatası: {str(e)}"
+    
     response_data = json.dumps({"evaluation": evaluation}, ensure_ascii=False)
-
     return Response(response_data, content_type="application/json; charset=utf-8")
