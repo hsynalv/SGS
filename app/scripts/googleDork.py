@@ -46,7 +46,7 @@ def validate_domain(domain):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Kullanım: python3 googleDork_script.py <domain>")
+        print("Kullanım: python3 googleDork.py <domain>")
         sys.exit(1)
 
     domain = sys.argv[1]
