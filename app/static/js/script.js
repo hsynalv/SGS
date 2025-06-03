@@ -1,5 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
-    document.getElementById('tool').addEventListener('change', function() {
+    const toolElement = document.getElementById('tool');
+    if (!toolElement) {
+        return;
+    }
+
+    toolElement.addEventListener('change', function() {
         var selectedTool = this.value;
 
         var niktoOptions = document.getElementById('nikto-options');
@@ -84,9 +89,26 @@ var socket = io.connect('http://' + document.domain + ':' + location.port, {
     timeout: 20000            // Maksimum bağlantı bekleme süresi (ms)
 });
 // WebSocket ile tarama durumunu dinliyoruz
+var statusEl = document.getElementById('status-text');
 socket.on('progress', function(data) {
     console.log(data); // Veriyi görmek için ekledik
-    document.getElementById('status-text').innerText = data.status;
+    if (statusEl) {
+        statusEl.innerText = data.status;
+    }
+});
+socket.on('completed', function(data) {
+    if (statusEl) {
+        statusEl.innerText = data.status;
+    }
+    var evalLink = document.getElementById('evaluation-link');
+    if (evalLink) {
+        evalLink.style.display = 'block';
+    }
+});
+socket.on('redirect', function(data) {
+    if (data.url) {
+        window.location.href = data.url;
+    }
 });
 function startScan() {
     var tool = document.getElementById('tool').value;
