@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 
+import os
 import sys
 import subprocess
 import xml.etree.ElementTree as ET
+
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'outputs')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 def print_help():
     print("\nKullanım: python localExploredevice.py <interface> <ip_cidr_notation>\n")
@@ -46,7 +50,7 @@ def output_to_xml(data):
     xml_string = ET.tostring(root, encoding="unicode")
 
     # XML dosyasını kaydet
-    filename = "ArpScanResults.xml"
+    filename = os.path.join(OUTPUT_DIR, "ArpScanResults.xml")
     with open(filename, 'w') as xml_file:
         xml_file.write(xml_string)
 

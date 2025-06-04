@@ -4,6 +4,9 @@ import sys
 import re
 import time
 
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'outputs')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
 def check_zap_installed():
     """ZAP aracının yüklü olup olmadığını kontrol eder."""
     try:
@@ -29,7 +32,7 @@ def run_zap(url):
     print("\nTarama Başlatılıyor...")
     time.sleep(2)
 
-    output_file = "owaspZap_scanResult.xml"
+    output_file = os.path.join(OUTPUT_DIR, "owaspZap_scanResult.xml")
 
     try:
         # ZAP'ı başlat ve taramayı gerçekleştir

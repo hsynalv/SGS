@@ -4,6 +4,9 @@ import sys
 import re
 import time
 
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'outputs')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
 def check_uniscan_installed():
     """Uniscan aracının yüklü olup olmadığını kontrol eder."""
     try:
@@ -29,7 +32,7 @@ def run_uniscan(url):
     print("Tarama Başlatılıyor...")
     time.sleep(2)
 
-    output_file = "uniscan_output.xml"
+    output_file = os.path.join(OUTPUT_DIR, "uniscan_output.xml")
     
     try:
         # Uniscan komutunu çalıştır ve çıktıyı XML formatında kaydet

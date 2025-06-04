@@ -1,7 +1,10 @@
+import os
 import subprocess
 import sys
-import os
 import socket
+
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'outputs')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 def check_emailfinder_installed():
     """Emailfinder aracının yüklü olup olmadığını kontrol eder."""
@@ -25,7 +28,7 @@ def validate_domain(domain):
 def run_emailfinder(domain):
     """Emailfinder aracını belirtilen domain üzerinde çalıştırır."""
     try:
-        output_file = "emailfinder_out.txt"
+        output_file = os.path.join(OUTPUT_DIR, "emailfinder_out.txt")
         command = ["emailfinder", "-d", domain]
         print("\nTarama başlatıldı, email bilgileri tespit ediliyor...\n")
         result = subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)

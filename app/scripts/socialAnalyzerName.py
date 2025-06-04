@@ -6,6 +6,9 @@ import subprocess
 import xml.etree.ElementTree as ET
 import time
 
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'outputs')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
 def print_help():
     print("\nKullanım: python3 socialAnalyzerName.py <target_name>\n")
 
@@ -42,7 +45,7 @@ def output_to_xml(target_name, data):
     xml_string = ET.tostring(root, encoding="unicode")
 
     # XML dosyasını kaydet
-    filename = f"SocialAnalyzerResults_{target_name.replace(' ', '_')}.xml"
+    filename = os.path.join(OUTPUT_DIR, f"SocialAnalyzerResults_{target_name.replace(' ', '_')}.xml")
     with open(filename, 'w') as xml_file:
         xml_file.write(xml_string)
 

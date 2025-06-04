@@ -1,6 +1,10 @@
+import os
 import subprocess
 import sys
 import shutil
+
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'outputs')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 def check_wapiti_installed():
     wapiti_path = shutil.which('wapiti')
@@ -12,8 +16,9 @@ def check_wapiti_installed():
         sys.exit(1)
 
 def perform_scan(url):
-    output_dir = '/home/kali/Documents/BilfenProject/wapitiScan'
-    output_file = f"{output_dir}/{url.split('//')[-1].replace('/', '_')}_wapiti.xml"
+    output_dir = os.path.join(OUTPUT_DIR, 'wapitiScan')
+    os.makedirs(output_dir, exist_ok=True)
+    output_file = os.path.join(output_dir, f"{url.split('//')[-1].replace('/', '_')}_wapiti.xml")
     
     try:
         # Wapiti ile tarama yap ve sonuçları XML dosyasına kaydet

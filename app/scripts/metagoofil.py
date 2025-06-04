@@ -1,6 +1,9 @@
+import os
 import subprocess
 import sys
-import os
+
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'outputs')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 def check_metagoofil_installed():
     """Metagoofil aracının yüklü olup olmadığını kontrol eder."""
@@ -16,7 +19,10 @@ def check_metagoofil_installed():
 def run_metagoofil(domain):
     """Metagoofil aracını belirtilen domain üzerinde çalıştırır."""
     try:
-        command = ["metagoofil", "-d", domain, "-t", "pdf,doc,docx,xlsx","-o","metagoofil_result","-f","metagoofil.html","-e", "2"]
+        output_dir = os.path.join(OUTPUT_DIR, "metagoofil_result")
+        os.makedirs(output_dir, exist_ok=True)
+        output_html = os.path.join(output_dir, "metagoofil.html")
+        command = ["metagoofil", "-d", domain, "-t", "pdf,doc,docx,xlsx", "-o", output_dir, "-f", output_html, "-e", "2"]
         result = subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         print("Metagoofil çıktısı:\n", result.stdout.decode())
     except subprocess.CalledProcessError as e:

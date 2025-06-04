@@ -1,6 +1,10 @@
+import os
 import subprocess
 import sys
 import shutil
+
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'outputs')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 def check_skipfish_installed():
     skipfish_path = shutil.which('skipfish')
@@ -12,7 +16,7 @@ def check_skipfish_installed():
         sys.exit(1)
 
 def perform_scan(url):
-    output_file = "/home/kali/Documents/BilfenProject/skipfish"
+    output_file = os.path.join(OUTPUT_DIR, "skipfish")
     
     try:
         # Skipfish ile tarama yap ve sonuçları XML dosyasına kaydet
