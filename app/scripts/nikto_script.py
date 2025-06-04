@@ -1,6 +1,10 @@
 
+import os
 import subprocess
 import sys
+
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'outputs')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 def check_nikto_installed():
     try:
@@ -17,7 +21,7 @@ def check_nikto_installed():
         sys.exit(1)
 
 def perform_scan(domain, port, ssl_option):
-    output_file = f"{domain}_nikto_scan.xml"
+    output_file = os.path.join(OUTPUT_DIR, f"{domain}_nikto_scan.xml")
     ssl_flag = '-ssl' if ssl_option == 'ssl' else '-nossl'
     
     try:

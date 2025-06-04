@@ -1,6 +1,10 @@
+import os
 import subprocess
 import sys
 import time
+
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'outputs')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 def check_raccoon_installed():
     try:
@@ -17,13 +21,13 @@ def check_raccoon_installed():
         sys.exit(1)
 
 def perform_scan(domain):
-    output_file = f"{domain}_scan.xml"
+    output_file = os.path.join(OUTPUT_DIR, f"{domain}_scan.xml")
     
     try:
         # Raccoon ile tarama yap ve sonuçları XML dosyasına kaydet
         print(f"{domain} için tarama başlatılıyor...\n")
         time.sleep(1)
-        subprocess.run(['raccoon','-f', domain, '-o', output_file], check=True)   # -f --> full scan: -sV and -sC, scan version and Script(for exploit)
+        subprocess.run(['raccoon', '-f', domain, '-o', output_file], check=True)   # -f --> full scan
         print(f"Tarama tamamlandı. Sonuçlar {output_file} dosyasına kaydedildi.")
     except KeyboardInterrupt:
         print("Çıkış Yapıldı...")

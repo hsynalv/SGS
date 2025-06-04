@@ -1,7 +1,11 @@
+import os
 import subprocess
 import sys
 import validators
 from datetime import datetime
+
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'outputs')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 
 def validate_url(url):
@@ -16,7 +20,7 @@ def run_dirb(url):
         wordlist = "/usr/share/wordlists/dirb/common.txt"
         # Zaman damgası ile benzersiz bir çıktı dosyası adı oluşturulur
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        output_file = f"dirb_output_{timestamp}.xml"  # Yeni bir çıktı dosyası adı oluşturulur
+        output_file = os.path.join(OUTPUT_DIR, f"dirb_output_{timestamp}.xml")  # Yeni bir çıktı dosyası adı oluşturulur
         command = ["dirb", url, wordlist, "-o", output_file]  # Çıktıyı XML formatında kaydetmek için '-o' kullanılır
         print("\nGizli dizin taraması başlatıldı...\n")
 

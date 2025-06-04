@@ -7,6 +7,9 @@ import xml.etree.ElementTree as ET
 import urllib.parse
 import time
 
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'outputs')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
 def print_help():
     print("\nKullanım: python3 googledork.py <isim>\n")
 
@@ -76,7 +79,7 @@ def output_to_xml(name, results):
     xml_string = ET.tostring(root, encoding="unicode")
 
     # XML dosyasını kaydet
-    filename = f"GoogleDorkResults_{name.replace(' ', '_')}.xml"
+    filename = os.path.join(OUTPUT_DIR, f"GoogleDorkResults_{name.replace(' ', '_')}.xml")
     with open(filename, 'w') as xml_file:
         xml_file.write(xml_string)
 

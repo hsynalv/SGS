@@ -7,6 +7,9 @@ import subprocess
 import xml.etree.ElementTree as ET
 from datetime import datetime
 
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'outputs')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
 def print_help():
     print("\nKullanım: python3 emailfinddomain.py <domain>")
 
@@ -58,8 +61,8 @@ def output_to_xml(domain, email_data):
 def save_xml_to_file(xml_data):
     """XML verisini dosyaya kaydeder."""
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = f"emailFindDomain_{timestamp}.xml"
-    
+    filename = os.path.join(OUTPUT_DIR, f"emailFindDomain_{timestamp}.xml")
+
     with open(filename, 'w') as xml_file:
         xml_file.write(xml_data)
     

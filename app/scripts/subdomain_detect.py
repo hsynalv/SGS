@@ -1,5 +1,9 @@
+import os
 import subprocess
 import sys
+
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'outputs')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 def check_sublist3r_installed():
     """Sublist3r aracının yüklü olup olmadığını kontrol eder."""
@@ -15,7 +19,7 @@ def check_sublist3r_installed():
 def run_sublist3r(domain):
     """Sublist3r aracını belirtilen domain üzerinde çalıştırır ve sonuçları bir XML dosyasına kaydeder."""
     try:
-        output_file = "subdomain.xml"
+        output_file = os.path.join(OUTPUT_DIR, "subdomain.xml")
         command = ["sublist3r", "-v", "-d", domain, "-o", output_file]
         result = subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         print(f"Sublist3r çalışması tamamlandı. Çıktı dosyası: {output_file}")

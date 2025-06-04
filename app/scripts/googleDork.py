@@ -1,8 +1,12 @@
+import os
 import requests
 import sys
 import xml.etree.ElementTree as ET
 from urllib.parse import quote
 import validators
+
+OUTPUT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'outputs')
+os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 def generate_dork_url(domain, dork):
     """Belirtilen domain ve dork için Google arama URL'sini oluşturur."""
@@ -35,8 +39,9 @@ def fetch_dork_results(domain, dorks):
             ET.SubElement(domain_element, "dork_result", type=dork).text = f"Unexpected error: {str(e)}"
 
     tree = ET.ElementTree(root)
-    tree.write(f"{domain}_dork_results.xml", encoding='utf-8', xml_declaration=True)
-    print(f"Veriler {domain}_dork_results.xml dosyasına kaydedildi.")
+    output_file = os.path.join(OUTPUT_DIR, f"{domain}_dork_results.xml")
+    tree.write(output_file, encoding='utf-8', xml_declaration=True)
+    print(f"Veriler {output_file} dosyasına kaydedildi.")
 
 def validate_domain(domain):
     """Domain'in geçerli olup olmadığını kontrol eder."""
